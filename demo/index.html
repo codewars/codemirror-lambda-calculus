@@ -1,25 +1,37 @@
 <!doctype html>
-
+<html>
+<head>
 <title>CodeMirror: Lambda Calculus mode</title>
 <meta charset="utf-8"/>
-<link rel=stylesheet href="src/docs.css">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/3024-night.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+<link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
-<style>.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
-<div id=nav>
-  <a href="https://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png" alt=""></a>
-  <ul>
-    <li><a class=active href="#">Lambda Calculus</a>
-  </ul>
-</div>
+<style>
+.CodeMirror { border-top: 1px solid black; border-bottom: 1px solid black; }
+.CodeMirror-scrollbar-filler { background: black; }
+</style>
+<style>
+.text-center { text-align: center; }
+</style>
+</head>
 
-<article>
-<h2>Lambda Calculus mode</h2>
-<form><textarea id="code" name="code">
+<body>
 
+<header>
+  <h1>
+    <a href="https://github.com/codewars/lambda-calculus" title="Lambda Calculus">
+      <img alt="Lambda Calculus" src="https://raw.githubusercontent.com/codewars/lambda-calculus/main/logo/logo-white.svg" width="64" height="64">
+    </a>
+  </h1>
+  <h3 class="text-center">Lambda Calculus mode for CodeMirror</h3>
+</header>
+
+<main>
+<p class="text-center"><a href="https://github.com/codewars/codemirror-lambda-calculus">@codewars/codemirror-lambda-calculus</a></p>
+<form>
+<textarea id="code" name="code">
 # Some code (with ignored arguments)
 false = \ _a b . b
 true = \ a _b . a
@@ -75,26 +87,29 @@ concat = foldr append nil
 eq = \ a b . isZ a (isZ b) (isZ b false (eq (pred a) (pred b)))
 all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
-</textarea></form>
+</textarea>
+</form>
+<p class="text-center"><strong>MIME type:</strong> <code>text/lambda-calc</code></p>
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/edit/matchbrackets.min.js"></script>
 <script src="../lambdacalc.js"></script>
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        theme: "3024-night",
-        specialChars: /\\/,
-        specialCharPlaceholder: () => {
-          const elem = document.createElement("span");
-          elem.setAttribute("cm-text", "\\");
-          elem.innerHTML = "λ";
-          return elem;
-        }
-      });
-      editor.setSize(500, 500);
-    </script>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    matchBrackets: true,
+    theme: "3024-night",
+    specialChars: /\\/,
+    specialCharPlaceholder: () => {
+      const elem = document.createElement("span");
+      elem.setAttribute("cm-text", "\\");
+      elem.innerHTML = "λ";
+      return elem;
+    }
+  });
+  editor.setSize(500, 500);
+</script>
 
-    <p><strong>MIME types defined:</strong> <code>text/lambda-calc</code>.</p>
-  </article>
+</body>
+</html>
