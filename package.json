@@ -4,6 +4,11 @@
   "type": "module",
   "description": "CodeMirror mode for Lambda Calculus",
   "main": "lambdacalc.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codewars/codemirror-lambda-calculus.git"
@@ -17,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/codewars/codemirror-lambda-calculus/issues"
   },
-  "homepage": "https://github.com/codewars/codemirror-lambda-calculus#readme"
+  "homepage": "https://github.com/codewars/codemirror-lambda-calculus#readme",
+  "devDependencies": {
+    "vite": "^2.8.1"
+  },
+  "peerDependencies": {
+    "codemirror": "5.x"
+  }
 }
