@@ -4,20 +4,19 @@
 <title>CodeMirror: Lambda Calculus mode</title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/3024-night.min.css">
+<link rel="stylesheet" href="./theme/codewars.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
 <link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
 <style>
 .CodeMirror { border-top: 1px solid black; border-bottom: 1px solid black; }
-.CodeMirror-scrollbar-filler { background: black; }
 </style>
 <style>
 .text-center { text-align: center; }
 </style>
 </head>
 
-<body>
+<body class="dark">
 
 <header>
   <h1>
@@ -100,7 +99,7 @@ allf = \ f xs . all (map f xs)
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
     matchBrackets: true,
-    theme: "3024-night",
+    theme: "codewars",
     specialChars: /\\/,
     specialCharPlaceholder: () => {
       const elem = document.createElement("span");

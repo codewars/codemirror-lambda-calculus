@@ -4,6 +4,9 @@
   "type": "module",
   "description": "Lambda Calculus mode for CodeMirror",
   "main": "lambdacalc.js",
+  "files": [
+    "lambdacalc.js"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -24,6 +27,7 @@
   },
   "homepage": "https://github.com/codewars/codemirror-lambda-calculus#readme",
   "devDependencies": {
+    "postcss-nesting": "^10.1.2",
     "vite": "^2.8.1"
   },
   "peerDependencies": {
