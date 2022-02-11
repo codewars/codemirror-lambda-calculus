@@ -1,0 +1,20 @@
+{
+  "name": "@codewars/codemirror-lambda-calculus",
+  "version": "0.1.0",
+  "description": "CodeMirror mode for Lambda Calculus",
+  "main": "lambdacalc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codewars/codemirror-lambda-calculus.git"
+  },
+  "keywords": [
+    "codemirror",
+    "lambda-calculus"
+  ],
+  "author": "Kacarott",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codewars/codemirror-lambda-calculus/issues"
+  },
+  "homepage": "https://github.com/codewars/codemirror-lambda-calculus#readme"
+}
