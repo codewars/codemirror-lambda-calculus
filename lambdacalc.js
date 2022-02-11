@@ -1,20 +1,5 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-// Lambda Calculus Mode written by Keldan Chapman (Kacarott on CodeWars)
-
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
+export const defineMode = function(CodeMirror) {
 CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
-
   // Modes for different types of symbols
   const DEFNAME = "variable-2";
   const EQUALS = "text";
@@ -155,6 +140,5 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
 
 });
 
-CodeMirror.defineMIME("text/x-lambdacalc", "lambdacalculus");
-
-});
+CodeMirror.defineMIME("text/x-lambdacalc", "lambdacalc");
+};

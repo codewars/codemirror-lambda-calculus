@@ -89,13 +89,14 @@ all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
 </textarea>
 </form>
-<p class="text-center"><strong>MIME type:</strong> <code>text/lambda-calc</code></p>
+<p class="text-center"><strong>MIME type:</strong> <code>text/x-lambdacalc</code></p>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/edit/matchbrackets.min.js"></script>
-<script src="../lambdacalc.js"></script>
-<script>
+<script type="module">
+  import { defineMode } from "./lambdacalc.js";
+  defineMode(CodeMirror);
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
     matchBrackets: true,
