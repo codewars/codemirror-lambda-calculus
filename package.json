@@ -28,7 +28,9 @@
   "homepage": "https://github.com/codewars/codemirror-lambda-calculus#readme",
   "devDependencies": {
     "postcss-nesting": "^10.1.2",
-    "vite": "^2.8.1"
+    "vite": "^2.8.1",
+    "vite-plugin-windicss": "^1.7.0",
+    "windicss": "^3.4.3"
   },
   "peerDependencies": {
     "codemirror": "5.x"
