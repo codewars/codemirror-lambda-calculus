@@ -9,26 +9,27 @@
 <link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
 
-
-  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.1c1c627a.js"></script>
-  <link rel="stylesheet" href="/codemirror-lambda-calculus/assets/index.ae17cbc1.css">
+  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.83402612.js"></script>
+  <link rel="stylesheet" href="/codemirror-lambda-calculus/assets/index.6032cad9.css">
 </head>
 
 <body class="dark">
 
-<header>
+<header class="!mb-0">
   <h1>
     <a href="https://github.com/codewars/lambda-calculus" title="Lambda Calculus">
       <img alt="Lambda Calculus" src="https://raw.githubusercontent.com/codewars/lambda-calculus/main/logo/logo-white.svg" width="64" height="64">
     </a>
+    <p class="mt-4 text-2xl text-center">Lambda Calculus mode for CodeMirror</p>
   </h1>
-  <h3 class="text-center">Lambda Calculus mode for CodeMirror</h3>
+  <p class="text-center"><code>text/x-lambdacalc</code></p>
+  <p class="text-center"><a href="https://github.com/codewars/codemirror-lambda-calculus">@codewars/codemirror-lambda-calculus</a></p>
 </header>
 
-<main>
-<p class="text-center"><a href="https://github.com/codewars/codemirror-lambda-calculus">@codewars/codemirror-lambda-calculus</a></p>
+<main class="mt-6" v-scope>
+
 <form>
-<textarea id="code" name="code">
+<textarea id="code">
 # Some code (with ignored arguments)
 false = \ _a b . b
 true = \ a _b . a
@@ -85,8 +86,42 @@ eq = \ a b . isZ a (isZ b) (isZ b false (eq (pred a) (pred b)))
 all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
 </textarea>
+
 </form>
-<p class="text-center"><strong>MIME type:</strong> <code>text/x-lambdacalc</code></p>
+
+<div class="mx-auto mt-8 w-96 grid grid-flow-row grid-cols-4 grid-rows-2 gap-1">
+  <input type="text"
+    v-model="evaluation"
+    @keyup.enter="evaluate()"
+    class="col-span-3"
+  />
+  <button @click="evaluate()" class="col-span-1">Evaluate</button>
+
+  <code v-cloak class="px-2 py-1 mt-1 col-span-4 bg-white/10" v-show="result">{{ result }}</code>
+  <code v-cloak class="px-2 py-1 mt-1 col-span-4 bg-red-800/60" v-show="error">{{ error }}</code>
+</div>
+
+<div class="mx-auto mt-4 w-80">
+  <fieldset>
+    <legend>Options</legend>
+    <div class="grid grid-cols-2 grid-rows-3 gap-1">
+      <label class="!m-0" for="purity"><code>purity</code></label>
+      <select id="purity" v-model="purity">
+        <option v-for="opt in purityOptions" :value="opt" :selected="opt === purity">{{ opt }}</option>
+      </select>
+
+      <label class="!m-0" for="num-encoding"><code>numEncoding</code></label>
+      <select id="num-encoding" v-model="numEncoding">
+        <option v-for="opt in numEncodingOptions" :value="opt" :selected="opt === numEncoding">{{ opt }}</option>
+      </select>
+
+      <label class="!m-0" for="verbosity"><code>verbosity</code></label>
+      <select id="verbosity" v-model="verbosity">
+        <option v-for="opt in verbosityOptions" :value="opt" :selected="opt === verbosity">{{ opt }}</option>
+      </select>
+    </div>
+  </fieldset>
+</div>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
