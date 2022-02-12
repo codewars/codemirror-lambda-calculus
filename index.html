@@ -10,27 +10,27 @@
 
 <style>
 .CodeMirror { border-top: 1px solid black; border-bottom: 1px solid black; }
-</style>
-<style>
-.text-center { text-align: center; }
+[v-cloak] { display: none !important; }
 </style>
 </head>
 
 <body class="dark">
 
-<header>
+<header class="!mb-0">
   <h1>
     <a href="https://github.com/codewars/lambda-calculus" title="Lambda Calculus">
       <img alt="Lambda Calculus" src="https://raw.githubusercontent.com/codewars/lambda-calculus/main/logo/logo-white.svg" width="64" height="64">
     </a>
+    <p class="mt-4 text-2xl text-center">Lambda Calculus mode for CodeMirror</p>
   </h1>
-  <h3 class="text-center">Lambda Calculus mode for CodeMirror</h3>
+  <p class="text-center"><code>text/x-lambdacalc</code></p>
+  <p class="text-center"><a href="https://github.com/codewars/codemirror-lambda-calculus">@codewars/codemirror-lambda-calculus</a></p>
 </header>
 
-<main>
-<p class="text-center"><a href="https://github.com/codewars/codemirror-lambda-calculus">@codewars/codemirror-lambda-calculus</a></p>
+<main class="mt-6" v-scope>
+
 <form>
-<textarea id="code" name="code">
+<textarea id="code">
 # Some code (with ignored arguments)
 false = \ _a b . b
 true = \ a _b . a
@@ -87,16 +87,55 @@ eq = \ a b . isZ a (isZ b) (isZ b false (eq (pred a) (pred b)))
 all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
 </textarea>
+
 </form>
-<p class="text-center"><strong>MIME type:</strong> <code>text/x-lambdacalc</code></p>
+
+<div class="mx-auto mt-8 w-96 grid grid-flow-row grid-cols-4 grid-rows-2 gap-1">
+  <input type="text"
+    v-model="evaluation"
+    @keyup.enter="evaluate()"
+    class="col-span-3"
+  />
+  <button @click="evaluate()" class="col-span-1">Evaluate</button>
+
+  <code v-cloak class="px-2 py-1 mt-1 col-span-4 bg-white/10" v-show="result">{{ result }}</code>
+  <code v-cloak class="px-2 py-1 mt-1 col-span-4 bg-red-800/60" v-show="error">{{ error }}</code>
+</div>
+
+<div class="mx-auto mt-4 w-80">
+  <fieldset>
+    <legend>Options</legend>
+    <div class="grid grid-cols-2 grid-rows-3 gap-1">
+      <label class="!m-0" for="purity"><code>purity</code></label>
+      <select id="purity" v-model="purity">
+        <option v-for="opt in purityOptions" :value="opt" :selected="opt === purity">{{ opt }}</option>
+      </select>
+
+      <label class="!m-0" for="num-encoding"><code>numEncoding</code></label>
+      <select id="num-encoding" v-model="numEncoding">
+        <option v-for="opt in numEncodingOptions" :value="opt" :selected="opt === numEncoding">{{ opt }}</option>
+      </select>
+
+      <label class="!m-0" for="verbosity"><code>verbosity</code></label>
+      <select id="verbosity" v-model="verbosity">
+        <option v-for="opt in verbosityOptions" :value="opt" :selected="opt === verbosity">{{ opt }}</option>
+      </select>
+    </div>
+  </fieldset>
+</div>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/edit/matchbrackets.min.js"></script>
 <script type="module">
+  import "virtual:windi.css";
+
+  import { createApp } from "https://unpkg.com/petite-vue@0.4.1?module";
+  import * as LC from "https://unpkg.com/@codewars/lambda-calculus";
   import { defineMode } from "./lambdacalc.js";
   defineMode(CodeMirror);
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+  const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    mode: "lambdacalc",
     lineNumbers: true,
     matchBrackets: true,
     theme: "codewars",
@@ -108,7 +147,39 @@ allf = \ f xs . all (map f xs)
       return elem;
     }
   });
-  editor.setSize(500, 500);
+  editor.setSize(500, 400);
+
+  const toLambda = (s) => s.replace(/\\/g, "λ");
+  createApp({
+    purity: "Let",
+    purityOptions: ["Let", "LetRec", "PureLC"],
+    verbosity: "Calm",
+    verbosityOptions: ["Calm", "Concise", "Loquacious", "Verbose"],
+    numEncoding: "Church",
+    numEncodingOptions: ["None", "Church", "Scott", "BinaryScott"],
+
+    evaluation: "not false",
+    result: "",
+    error: "",
+    evaluate() {
+      this.result = "";
+      this.error = "";
+
+      const code = editor.getValue();
+      const val = this.evaluation;
+      const compile = LC.compileWith({
+        purity: this.purity,
+        verbosity: this.verbosity,
+        numEncoding: this.numEncoding,
+      });
+      try {
+        const { result } = compile(`${code}\n\nresult = ${val}`);
+        this.result = toLambda(result.term + "");
+      } catch (e) {
+        this.error = e.message || e.name;
+      }
+    },
+  }).mount();
 </script>
 
 </body>
