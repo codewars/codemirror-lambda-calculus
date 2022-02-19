@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
 
-  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.83402612.js"></script>
+  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.609e0f85.js"></script>
   <link rel="stylesheet" href="/codemirror-lambda-calculus/assets/index.6032cad9.css">
 </head>
 
@@ -30,7 +30,7 @@
 
 <form>
 <textarea id="code">
-# Some code (with ignored arguments)
+# Ignored arguments
 false = \ _a b . b
 true = \ a _b . a
 not = \ b . b false true
@@ -42,16 +42,37 @@ true = not false
 # Invalid names
 %value = ()
 
-# Invalid args - unbound
-someFunc = \ local . true nonexistant local
+# Invalid whitespace (tabs)
+whitespace	=	()
 
-# Invalid args - scoped
-otherFunc = \ x . const (\ scopedArg . x ()) scopedArg x
+# Bare term
+(\ f x . f (x x))
+
+# Unbound
+some-func = \ local . true non-existent local
+
+# Out of scope args
+other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
+
+# Debug mode on
+#debug
+
+# Bare term - Debug
+(\ f x . f (x x))
+
+# Unbound - Debug
+some-func = \ local . true non-existent local
+
+# Out of scope args - Debug
+other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
+
+# Debug mode off
+#debug
 
 # More code
 zero = false
 succ = \ n f x . f (n f x)
-isZ = \ n . n (const false) true
+is-z = \ n . n (const false) true
 add = \ a b f x . a f (b f x)
 mul = \ a b f . a (b f)
 three = succ (succ (succ zero))
@@ -74,15 +95,15 @@ pred = \ n f x . foldr (const f) x (tail (replicate n ())) # Bit janky lol
 map = \ f xs . null xs nil (cons (f (head xs)) (map f (tail xs)))
 sum = foldr add zero
 drop = \ n . n tail
-take = \ n xs . isZ n nil (cons (head xs) (take (pred n) (tail xs)))
+take = \ n xs . is-z n nil (cons (head xs) (take (pred n) (tail xs)))
 col = \ n xs . head (drop n xs)
 colS = \ n xs . cons (col n xs) (cons (col (succ n) xs) (cons (col (succ (succ n)) xs) (nil)))
 row = \ n xs . map (col n) xs
-rowS = \ n xs . cons (row n xs) (cons (row (succ n) xs) (cons (row (succ (succ n)) xs) (nil)))
-chunk = \ a b xs . rowS a (colS b xs)
+row-s = \ n xs . cons (row n xs) (cons (row (succ n) xs) (cons (row (succ (succ n)) xs) (nil)))
+chunk = \ a b xs . row-s a (colS b xs)
 append = \ as bs . null as bs (cons (head as) (append (tail as) bs))
 concat = foldr append nil
-eq = \ a b . isZ a (isZ b) (isZ b false (eq (pred a) (pred b)))
+eq = \ a b . is-z a (is-z b) (is-z b false (eq (pred a) (pred b)))
 all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
 </textarea>
