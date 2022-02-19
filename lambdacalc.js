@@ -123,8 +123,9 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
     }; },
 
     token: function(stream, state) {
-      if (/\s/.test(stream.peek())) {
-        stream.eatSpace();
+      if (stream.eat(/\t/)) return FAIL;
+      if (/[ \n]/.test(stream.peek())) {
+        stream.eatWhile(/[ \n]/);
         return;
       }
       if (stream.peek() === '#') {
