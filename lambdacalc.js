@@ -129,7 +129,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
         return;
       }
       if (stream.peek() === '#') {
-        if (stream.match(/^#debug\s*$/))
+        if (stream.match(/^#debug/))
           state.debug = !state.debug;
         stream.skipToEnd();
         return "comment"
