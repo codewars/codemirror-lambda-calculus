@@ -6,7 +6,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const BRACKETS = "bracket";
   const LAMBDA = "keyword";
   const DOT = LAMBDA;
-  const PREDEF = "variable";
+  const PREDEF = "text";
   const BOUND = "text";
   const ARGS = "def";
   const HOLE = "atom";
