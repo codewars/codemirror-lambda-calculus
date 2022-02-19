@@ -6,7 +6,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const BRACKETS = "bracket";
   const LAMBDA = "keyword";
   const DOT = LAMBDA;
-  const PREDEF = "variable";
+  const PREDEF = "text";
   const BOUND = "text";
   const ARGS = "def";
   const HOLE = "atom";
@@ -21,6 +21,11 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const brack = /\(|\)/
   const lamArg = /[a-zA-Z_][a-zA-Z0-9_\-']*|\./
   const numconst = /\d+/
+
+  function expectDefOrTerm(stream, state) {
+    return expectDef(stream, state)
+      || (state.debug ? null : expectTerm(stream, state));
+  }
 
   function expectDef(stream, state) {
     const name = (stream.match(defName)||[])[0];
@@ -61,6 +66,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
       state.depth.pop();
       state.bound.pop();
     }
+    state.f = expectTerm;
     return BRACKETS;
   }
 
@@ -75,7 +81,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
     if (!res) return null;
     if (state.bound.some(v=>v.includes(res))) return BOUND;
     if (state.defined.includes(res)) return PREDEF;
-    return UNDEF;
+    return state.debug ? UNDEF : "text";
   }
 
   function number(stream, state) {
@@ -102,30 +108,35 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
 
   return {
     startState: function ()  { return {
-      f: expectDef,
+      f: expectDefOrTerm,
       depth: [],
       defined: [],
-      bound: [[]]
+      bound: [[]],
+      debug: false
     }; },
     copyState:  function (s) { return {
       f: s.f,
       depth: [...s.depth],
       defined: [...s.defined],
-      bound: s.bound.map(v=>[...v])
+      bound: s.bound.map(v=>[...v]),
+      debug: s.debug
     }; },
 
     token: function(stream, state) {
-      if (/\s/.test(stream.peek())) {
-        stream.eatSpace();
+      if (stream.eat(/\t/)) return FAIL;
+      if (/[ \n]/.test(stream.peek())) {
+        stream.eatWhile(/[ \n]/);
         return;
       }
       if (stream.peek() === '#') {
+        if (stream.match(/^#debug/))
+          state.debug = !state.debug;
         stream.skipToEnd();
         return "comment"
       }
       if (stream.sol() && state.depth.length === 0) {
         state.bound = [[]];
-        state.f = expectDef;
+        state.f = expectDefOrTerm;
       }
       return state.f(stream, state) || onFail(stream, state);
     },
