@@ -50,7 +50,7 @@ whitespace	=	()
 (\ f x . f (x x))
 
 # Unbound
-some-func = \ local . true non-existant local
+some-func = \ local . true non-existent local
 
 # Out of scope args
 other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
@@ -62,7 +62,7 @@ other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
 (\ f x . f (x x))
 
 # Unbound - Debug
-some-func = \ local . true non-existant local
+some-func = \ local . true non-existent local
 
 # Out of scope args - Debug
 other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
