@@ -31,7 +31,7 @@
 
 <form>
 <textarea id="code">
-# Some code (with ignored arguments)
+# Ignored arguments
 false = \ _a b . b
 true = \ a _b . a
 not = \ b . b false true
@@ -43,11 +43,32 @@ true = not false
 # Invalid names
 %value = ()
 
-# Invalid args - unbound
+# Invalid whitespace (tabs)
+whitespace	=	()
+
+# Bare term
+(\ f x . f (x x))
+
+# Unbound
 someFunc = \ local . true nonexistant local
 
-# Invalid args - scoped
+# Out of scope args
 otherFunc = \ x . const (\ scopedArg . x ()) scopedArg x
+
+# Debug mode on
+#debug
+
+# Bare term - Debug
+(\ f x . f (x x))
+
+# Unbound - Debug
+someFunc = \ local . true nonexistant local
+
+# Out of scope args - Debug
+otherFunc = \ x . const (\ scopedArg . x ()) scopedArg x
+
+# Debug mode off
+#debug
 
 # More code
 zero = false
