@@ -103,7 +103,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   }
 
   function onFail(stream, state) {
-    stream.match(/[^\s]*/);
+    stream.match(/[^\s#]*/);
     return FAIL ;
   }
 
