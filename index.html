@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
 
-  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.609e0f85.js"></script>
+  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.d2832dc8.js"></script>
   <link rel="stylesheet" href="/codemirror-lambda-calculus/assets/index.6032cad9.css">
 </head>
 
@@ -39,14 +39,17 @@ const = true
 # Multiple definition
 true = not false
 
-# Invalid names
-%value = ()
-
 # Invalid whitespace (tabs)
 whitespace	=	()
 
-# Bare term
+# Bare lambda
 (\ f x . f (x x))
+
+# Bare term
+const f x
+
+# Symbols
+< a b c >  => < a a a >
 
 # Unbound
 some-func = \ local . true non-existent local
@@ -57,8 +60,17 @@ other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
 # Debug mode on
 #debug
 
-# Bare term - Debug
+# Invalid names - Debug
+%value = ()
+
+# Bare lambda - Debug
 (\ f x . f (x x))
+
+# Bare term - Debug
+const f x
+
+# Symbols - Debug
+< a b c >  => < a a a >
 
 # Unbound - Debug
 some-func = \ local . true non-existent local
