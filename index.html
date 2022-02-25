@@ -40,14 +40,17 @@ const = true
 # Multiple definition
 true = not false
 
-# Invalid names
-%value = ()
-
 # Invalid whitespace (tabs)
 whitespace	=	()
 
-# Bare term
+# Bare lambda
 (\ f x . f (x x))
+
+# Bare term
+const f x
+
+# Symbols
+< a b c >  => < a a a >
 
 # Unbound
 some-func = \ local . true non-existent local
@@ -58,8 +61,17 @@ other-func = \ x . const (\ scoped-arg . x ()) scoped-arg x
 # Debug mode on
 #debug
 
-# Bare term - Debug
+# Invalid names - Debug
+%value = ()
+
+# Bare lambda - Debug
 (\ f x . f (x x))
+
+# Bare term - Debug
+const f x
+
+# Symbols - Debug
+< a b c >  => < a a a >
 
 # Unbound - Debug
 some-func = \ local . true non-existent local

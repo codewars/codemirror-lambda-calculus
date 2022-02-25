@@ -14,6 +14,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const EMPTY = "text";
   const UNDEF = "error";
   const REDEF = "variable-3";
+  const SUPPRESS = "text";
   const FAIL = "error";
 
   const defName = /[a-zA-Z][a-zA-Z0-9_\-']*/
@@ -23,14 +24,14 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const numconst = /\d+/
 
   function expectDefOrTerm(stream, state) {
-    return expectDef(stream, state)
-      || (state.debug ? null : expectTerm(stream, state));
+    if (stream.match(/.*=/, false)) return expectDef(stream, state);
+    else return expectTerm(stream, state);
   }
 
   function expectDef(stream, state) {
     const name = (stream.match(defName)||[])[0];
     state.f = expectAssign;
-    if (!name || !(/[=\s]/.test(stream.peek()) || stream.eol())) return null;
+    if (!name || !(stream.match(/\s*=/, false))) return null;
     const res = [];
     if (state.defined.includes(name)) res.push(REDEF);
     state.defined.push(name);
@@ -81,7 +82,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
     if (!res) return null;
     if (state.bound.some(v=>v.includes(res))) return BOUND;
     if (state.defined.includes(res)) return PREDEF;
-    return state.debug ? UNDEF : "text";
+    return UNDEF;
   }
 
   function number(stream, state) {
@@ -103,12 +104,12 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
 
   function onFail(stream, state) {
     stream.match(/[^\s]*/);
-    return FAIL
+    return FAIL ;
   }
 
   return {
     startState: function ()  { return {
-      f: expectDefOrTerm,
+      f: expectDef,
       depth: [],
       defined: [],
       bound: [[]],
@@ -136,13 +137,15 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
       }
       if (stream.sol() && state.depth.length === 0) {
         state.bound = [[]];
-        state.f = expectDefOrTerm;
+        state.f = expectDef;
       }
-      return state.f(stream, state) || onFail(stream, state);
+      const res = state.f(stream, state)
+        || (state.debug ? null : expectDefOrTerm(stream, state))
+        || onFail(stream, state);
+      return !state.debug && res == FAIL ? SUPPRESS : res ;
     },
 
     indent: function(state, textAfter) {
-      console.log(state.depth);
       if (!state.depth.length) return 0;
       return state.depth[state.depth.length-1] + 2;
     },
