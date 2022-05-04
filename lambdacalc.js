@@ -64,6 +64,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
       state.bound.push([]);
     }
     else {
+      if (!(state.depth.length && state.bound.length)) return FAIL;
       state.depth.pop();
       state.bound.pop();
     }
