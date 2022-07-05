@@ -21,7 +21,7 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const assign = /=/
   const brack = /\(|\)/
   const lamArg = /[a-zA-Z_][a-zA-Z0-9_\-']*|\./
-  const numconst = /\d+/
+  const numconst = /-?\d+/
 
   function expectDefOrTerm(stream, state) {
     if (stream.match(/.*=/, false)) return expectDef(stream, state);
