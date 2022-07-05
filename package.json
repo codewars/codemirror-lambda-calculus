@@ -1,6 +1,6 @@
 {
   "name": "@codewars/codemirror-lambda-calculus",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "description": "Lambda Calculus mode for CodeMirror",
   "main": "lambdacalc.js",
