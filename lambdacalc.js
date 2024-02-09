@@ -17,10 +17,10 @@ CodeMirror.defineMode("lambdacalc", function(_config, modeConfig) {
   const SUPPRESS = "text";
   const FAIL = "error";
 
-  const defName = /[a-zA-Z][a-zA-Z0-9_\-']*/
+  const defName = /[a-zA-Z][-'\w]*\??/
   const assign = /=/
   const brack = /\(|\)/
-  const lamArg = /[a-zA-Z_][a-zA-Z0-9_\-']*|\./
+  const lamArg = /[_a-zA-Z][-'\w]*\??|\./
   const numconst = /-?\d+/
 
   function expectDefOrTerm(stream, state) {
