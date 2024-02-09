@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/awsm.css@3.0.7/dist/awsm_theme_black.min.css">
 
 
-  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.f22edf7d.js"></script>
+  <script type="module" crossorigin src="/codemirror-lambda-calculus/assets/index.17b3fabc.js"></script>
   <link rel="stylesheet" href="/codemirror-lambda-calculus/assets/index.6032cad9.css">
 </head>
 
@@ -115,7 +115,7 @@ row-s = \ n xs . cons (row n xs) (cons (row (succ n) xs) (cons (row (succ (succ 
 chunk = \ a b xs . row-s a (colS b xs)
 append = \ as bs . null as bs (cons (head as) (append (tail as) bs))
 concat = foldr append nil
-eq = \ a b . is-z a (is-z b) (is-z b false (eq (pred a) (pred b)))
+eq? = \ a b . is-z a (is-z b) (is-z b false (eq? (pred a) (pred b)))
 all = foldr (\ a b . a b false) true
 allf = \ f xs . all (map f xs)
 </textarea>
